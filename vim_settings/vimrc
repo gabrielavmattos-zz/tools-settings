@@ -1,0 +1,78 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+"Plugin 'tpope/vim-fugitive'
+"Plugin 'L9'
+"Plugin 'git://git.wincent.com/command-t.git'
+"Plugin 'file:///home/gmarik/path/to/plugin'
+"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+"Plugin 'user/L9', {'name': 'newL9'}
+Plugin 'scrooloose/nerdtree'
+Plugin 'Yggdroot/indentLine'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'justinmk/vim-syntax-extra'
+Plugin 'vim-scripts/gtk-vim-syntax'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+" Put your non-Plugin stuff after this line
+
+set number
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set cursorline
+set colorcolumn=80
+set exrc
+set secure
+color slate
+
+
+" Tab Plugin Settings
+let g:indentLine_char = '|'
+let g:indentLine_color_term = 42
+hi Folded ctermbg=darkgrey
+hi clear SpellBad
+hi SpellBad cterm=undercurl
+hi Search ctermbg=black ctermfg=yellow cterm=underline
+set ssop-=options
+set ssop-=folds
+let glib_deprecated_errors = 1
+
+"Fold method
+set foldmethod=indent
+set foldlevel=0
+set foldnestmax=1
+let c_no_comment_fold = 1
+
+" Remaps
+nnoremap <silent><Leader><C-]> <C-w><C-]><C-w>T " Remap openning function definition on new tab
+nnoremap th  :tabfirst<CR>
+nnoremap tj  :tabnext<CR>
+nnoremap tk  :tabprev<CR>
+nnoremap tl  :tablast<CR>
+nnoremap tt  :tabedit<Space>
+nnoremap tn  :tabnext<Space>
+nnoremap tm  :tabm<Space>
+nnoremap td  :tabclose<CR>
+
+function! SaveWindowPosition()
+    let l:save_view = winsaveview()
+    exe "1,10g/Last Modified:.*/s//Last Modified: " .strftime("%c")
+    call winrestview(l:save_view)
+endfunction
+
+" Autocmd
+autocmd bufnewfile *.h,*.c so /opt/cfg/header.txt
+autocmd bufnewfile *.h,*.c exe "1," . 10 . "g/Filename:.*/s//Filename: " .expand("%:t")
+autocmd bufnewfile *.h,*.c exe "1," . 10 . "g/Creation Date:.*/s//Creation Date: " .strftime("%d-%m-%Y")
+autocmd Bufwritepre,filewritepre *.h,*.c exe "call SaveWindowPosition()"
