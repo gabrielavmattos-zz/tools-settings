@@ -70,9 +70,3 @@ function! SaveWindowPosition()
     exe "1,10g/Last Modified:.*/s//Last Modified: " .strftime("%c")
     call winrestview(l:save_view)
 endfunction
-
-" Autocmd
-autocmd bufnewfile *.h,*.c so /opt/cfg/header.txt
-autocmd bufnewfile *.h,*.c exe "1," . 10 . "g/Filename:.*/s//Filename: " .expand("%:t")
-autocmd bufnewfile *.h,*.c exe "1," . 10 . "g/Creation Date:.*/s//Creation Date: " .strftime("%d-%m-%Y")
-autocmd Bufwritepre,filewritepre *.h,*.c exe "call SaveWindowPosition()"
