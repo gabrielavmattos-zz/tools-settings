@@ -64,9 +64,3 @@ nnoremap tt  :tabedit<Space>
 nnoremap tn  :tabnext<Space>
 nnoremap tm  :tabm<Space>
 nnoremap td  :tabclose<CR>
-
-function! SaveWindowPosition()
-    let l:save_view = winsaveview()
-    exe "1,10g/Last Modified:.*/s//Last Modified: " .strftime("%c")
-    call winrestview(l:save_view)
-endfunction
