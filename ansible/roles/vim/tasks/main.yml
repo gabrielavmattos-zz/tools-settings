@@ -1,0 +1,15 @@
+---
+- name: install vim
+  homebrew:
+    name: vim
+    state: latest
+
+- copy:
+    src: ../vim_settings/vimrc
+    dest: ~/.vimrc
+
+- name: extract bundle.zip into ~/.bundle
+  unarchive:
+    src: ../vim_settings/bundle.zip
+    dest: ~/.bundle
+    remote_src: yes

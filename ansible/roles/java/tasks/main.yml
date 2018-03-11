@@ -1,0 +1,15 @@
+---
+- name: install jenv
+  homebrew: 
+    name: jenv
+    state: latest
+
+- name: install java6
+  homebrew_cask:
+    name: java6
+    state: installed
+
+- name: install java8
+  homebrew_cask:
+    name: java8
+    state: installed

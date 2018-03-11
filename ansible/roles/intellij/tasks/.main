@@ -1,0 +1,42 @@
+---
+  - name: Find latest version of IntelliJ Community Edition
+    uri:
+      url: "https://data.services.jetbrains.com/products/releases?code=IIU%2CIIC&latest=true&type=release"
+      return_content: yes
+      validate_certs: no
+      body_format: json
+    register: intellij_releases_response
+
+  - set_fact:
+      intellij_version: "{{ intellij_releases_response.json.IIC.0.version }}"
+
+  - name: Download IntelliJ Community Edition
+    get_url: 
+      url: "http://download.jetbrains.com/idea/ideaIC-{{intellij_version}}.tar.gz"
+      dest: /tmp/ideaIC-{{intellij_version}}.tar.gz
+
+  - name: Ensure installation directory
+    file:
+      state: directory
+      dest: ~/Applications/intellij
+
+  - name: Unarchive IntelliJ Community Edition
+    unarchive:
+      copy: no
+      src: /tmp/ideaIC-{{intellij_version}}.tar.gz
+      dest: ~/Applications/intellij
+
+  - name: Retrieve IntelliJ dir name
+    command: ls -t ~/Applications/intellij 
+    register: result_intellij_folder_name
+  
+  - name: Ensure IntelliJ is configured
+    template: 
+      src: idea.properties.j2
+      dest: ~/Applications/intellij/{{result_intellij_folder_name.stdout_lines.0}}/bin/idea.properties
+  
+  - name: Ensure IntelliJ bin exist
+    template: src=intellij.j2 dest=/usr/bin/intellij mode=755
+  
+  - name: Ensure IntelliJ shortcut is present
+    template: src=intellij.desktop.j2 dest=/usr/share/applications/intellij.desktop 
