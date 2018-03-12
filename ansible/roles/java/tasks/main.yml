@@ -4,6 +4,12 @@
     name: jenv
     state: latest
 
+- name: install it using homebrew cask
+  command: brew tap caskroom/cask
+
+- name: command pre install java6
+  command: brew tap caskroom/versions
+
 - name: install java6
   homebrew_cask:
     name: java6
